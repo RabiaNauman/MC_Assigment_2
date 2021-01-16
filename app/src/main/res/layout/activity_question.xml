@@ -8,7 +8,7 @@
     android:background="@mipmap/quranquizbg">
 
     <TextView
-        android:id="@+id/tvque"
+        android:id="@+id/quesField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/answersGrp"
@@ -85,35 +85,28 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="131dp"
-        android:layout_marginTop="528dp"
-        android:layout_marginEnd="192dp"
-        android:layout_marginRight="192dp"
-        android:layout_marginBottom="155dp"
+        android:layout_marginStart="174dp"
+        android:layout_marginTop="519dp"
+        android:layout_marginEnd="149dp"
+        android:layout_marginRight="149dp"
+        android:layout_marginBottom="164dp"
         android:background="@android:color/black"
         android:fontFamily="casual"
         android:text="NEXT"
         android:textColor="@color/white"
         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/quit_button"
+    <TextView
+        android:id="@+id/timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="231dp"
-        android:layout_marginTop="526dp"
-        android:layout_marginEnd="92dp"
-        android:layout_marginRight="92dp"
-        android:layout_marginBottom="157dp"
-        android:background="@android:color/black"
-        android:fontFamily="casual"
-        android:text="Quit"
+        android:layout_marginEnd="158dp"
+        android:layout_marginBottom="658dp"
+        android:fontFamily="monospace"
         android:textColor="@color/white"
+        android:textSize="36sp"
         android:textStyle="bold" />
 
 

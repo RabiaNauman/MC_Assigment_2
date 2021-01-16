@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -11,115 +13,175 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class Question extends AppCompatActivity {
 
-    TextView textview;
-    Button next, quit;
-    RadioGroup radio_group;
-    RadioButton rb1,rb2,rb3,rb4;
-
-    String questions[] = {
-            "1) What is the language of the Quran?",
-            "2) Who was the first prophet of Allah (s.w.t.)?",
-            "3) Believing in Allah (s.w.t.) , in His angels, in His books, in His messengers, in the last day, in destiny and in life after death means a Muslim has …",
-            "4) What is the meaning of An-Nas ?",
-            "5) A prophet is called .......... in Arabic",
-            "6) How many Allah (s.w.t.)'s are there ?",
-            "7) What is the first month of the Islamic Calendar?",
-            "8) What is Salat?",
-            "9) What is the count of Rashidun Caliphate?",
-            "10) What is the count of Surah in Quran"
-    };
-    String choices[] = {
-            "English" , "Arabic" , "Urdu" , "Hebrew",
-            "Nuh (a.s.)","Hud (a.s.)","Adam (a.s.)","Musa (a.s.)",
-            "Ihsan","Taqwa","Islam","Iman",
-            "The dawn","The opening","The people","The night",
-            "Nabi","Rasul","Both a and b","None of the above",
-            "Three","Two","One","Zero",
-            "Muharram","Ramadan","Shawwal","Rabi-ul-Awal",
-            "Fasting","Giving to the poor","Praying","Pilgrimage",
-            "One","Four","Three","Two",
-            "112","116","115","114"
-    };
-    String answers[] = {"Arabic",
-            "Adam (a.s.)",
-            "Iman",
-            "The people",
-            "Both a and b",
-            "One",
-            "Muharram",
-            "Praying",
-            "Four",
-            "114"};
-    int flag=0;
-    public static int marks=0,correct=0,wrong=0;
+    TextView countdown,ques;
+    Button ch1,ch2,ch3,ch4,next;
+    CountDownTimer tm;
+    View v;
+    boolean isClicked = false;
+    String txt;
+    int counter,qIndex;
+    Ques q;
+    int correct=0,wrong=0;
+    ArrayList<Ques> arr=new ArrayList<Ques>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
 
+        countdown=findViewById(R.id.timer);
+        ques=findViewById(R.id.quesField);
+        ch1=findViewById(R.id.rd);
+        ch2=findViewById(R.id.rd2);
+        ch3=findViewById(R.id.rd3);
+        ch4=findViewById(R.id.rd4);
+        next=findViewById(R.id.next_button);
 
-        next=(Button)findViewById(R.id.next_button);
-        quit=(Button)findViewById(R.id.quit_button);
-        textview=(TextView) findViewById(R.id.tvque);
-        radio_group=(RadioGroup)findViewById(R.id.answersGrp);
-        rb1=(RadioButton)findViewById(R.id.rd);
-        rb2=(RadioButton)findViewById(R.id.rd2);
-        rb3=(RadioButton)findViewById(R.id.rd3);
-        rb4=(RadioButton)findViewById(R.id.rd4);
-        textview.setText(questions[flag]);
-        rb1.setText(choices[0]);
-        rb2.setText(choices[1]);
-        rb3.setText(choices[2]);
-        rb4.setText(choices[3]);
+        arr.add(new Ques("What is the language of the Quran?","English" , "Arabic" , "Urdu" , "Hebrew","Arabic"));
+        arr.add(new Ques("Who was the first prophet of Allah (s.w.t.)?","Nuh (a.s.)","Hud (a.s.)","Adam (a.s.)","Musa (a.s.)","Adam (a.s.)"));
+        arr.add(new Ques("What is the count of Prophets?","124","112","142","132","124"));
+        arr.add(new Ques("What is the meaning of An-Nas ?","The dawn","The opening","The people","The night","The people"));
+        arr.add(new Ques("A prophet is called .......... in Arabic","Nabi","Rasul","Both a and b","None of the above","Both a and b"));
+        arr.add(new Ques("How many Allah (s.w.t.)'s are there ?","Three","Two","One","Zero","One"));
+        arr.add(new Ques("What is the first month of the Islamic Calendar?","Muharram","Ramadan","Shawwal","Rabi-ul-Awal","Muharram"));
+        arr.add(new Ques("What is Salat?","Fasting","Giving to the poor","Praying","Pilgrimage","Praying"));
+        arr.add(new Ques("What is the count of Rashidun Caliphate?","One","Four","Three","Two","Four"));
+        arr.add(new Ques("What is the count of Surah in Quran","112","116","115","114","114"));
+        Collections.shuffle(arr);
+        counter=0;
+        countdown.setText("" +10);
+        setData(counter);
+
         next.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
-
-                if(radio_group.getCheckedRadioButtonId()==-1)
+            public void onClick(View view) {
+                if(isClicked==true)
                 {
-                    Toast.makeText(getApplicationContext(), "Please select one choice", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                RadioButton uans = (RadioButton) findViewById(radio_group.getCheckedRadioButtonId());
-                String ansText = uans.getText().toString();
-
-                if(ansText.equals(answers[flag])) {
-                    correct++;
-                    Toast.makeText(getApplicationContext(), "Correct", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    wrong++;
-                    Toast.makeText(getApplicationContext(), "Wrong", Toast.LENGTH_SHORT).show();
-                }
-                flag++;
-                if(flag<questions.length)
-                {
-                    textview.setText(questions[flag]);
-                    rb1.setText(choices[flag*4]);
-                    rb2.setText(choices[flag*4 +1]);
-                    rb3.setText(choices[flag*4 +2]);
-                    rb4.setText(choices[flag*4 +3]);
+                    Log.i("bool", "onClick: "+isClicked);
+                    ClickNext(view,txt,qIndex);
                 }
                 else
                 {
-                    marks=correct;
-                    Intent in = new Intent(getApplicationContext(),ScoreBoard.class);
-                    startActivity(in);
+                    Log.i("bool", "else: "+isClicked);
+                    ClickNext(v,"Nothing",0);
                 }
-                radio_group.clearCheck();
+
+
             }
         });
 
-        quit.setOnClickListener(new View.OnClickListener() {
+        tm= new CountDownTimer(10*1000,1000)
+        {
             @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),ScoreBoard.class);
-                startActivity(intent);
+            public void onTick(long l) {
+                countdown.setText(String.format("%d", l / 1000));
+            }
+
+            @Override
+            public void onFinish() {
+                Toast.makeText(Question.this, "Time Over", Toast.LENGTH_SHORT).show();
+
+                ClickNext(v,"Nothing",0);
+            }
+        };
+    }
+    public  void setData(final int val)
+    {
+        final Ques obj=arr.get(val);
+        if (tm!=null)
+        {
+            tm.start();
+        }
+        ques.setText("#"+(val+1)+" "+obj.getQuestion());
+        ch1.setText(obj.getOpt1());
+        ch2.setText(obj.getOpt2());
+        ch3.setText(obj.getOpt3());
+        ch4.setText(obj.getOpt4());
+        ch1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isClicked=true;
+                txt = ch1.getText().toString();
+                qIndex = val;
+
             }
         });
+
+        ch2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isClicked=true;
+                txt=ch2.getText().toString();
+                qIndex=val;
+
+            }
+        });
+
+        ch3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isClicked=true;
+                txt=ch3.getText().toString();
+                qIndex=val;
+            }
+        });
+
+        ch4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isClicked=true;
+                txt=ch4.getText().toString();
+                qIndex=val;
+            }
+        });
+
+    }
+    public void newActivity(View view,int val,int total,int wrong)
+    {
+        Intent intent = new Intent(this,ScoreBoard.class);
+        String result="Correct: "+val+"\n"+"Wrong: "+wrong+"";
+        intent.putExtra("Result",result);
+        startActivity(intent);
+
+    }
+    public void ClickNext(View view,String clickedButtonText,int questionIndex)
+    {
+        final Ques q=arr.get(questionIndex);
+
+        if(counter<(arr.size()-1))
+        {
+            if(txt.equals(q.getAnswer())) {
+                correct++;
+            }
+            else {
+                wrong++;
+            }
+
+            tm.cancel();
+            isClicked=false;
+            counter++;
+            setData(counter);
+            if(counter==(arr.size()-1)){
+                next.setText("Finish");
+            }
+        }
+
+        else {
+
+            if (txt.equals(q.getAnswer())) {
+                correct++;
+            } else {
+                wrong++;
+            }
+            tm.cancel();
+
+            Toast.makeText(Question.this, "Questions are completed", Toast.LENGTH_SHORT).show();
+            newActivity(view, correct, arr.size(), wrong);
+        }
     }
 }

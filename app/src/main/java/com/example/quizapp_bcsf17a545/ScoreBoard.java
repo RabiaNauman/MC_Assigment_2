@@ -10,36 +10,23 @@ import android.widget.TextView;
 
 public class ScoreBoard extends AppCompatActivity {
 
-    TextView correctans;
-    TextView wrongans;
-    Button Restart;
+    TextView result;
+    Button restart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_board);
+        result=findViewById(R.id.result);
+        restart=findViewById(R.id.restart_button);
+        String s = getIntent().getStringExtra("Result");
+        result.setText(s);
 
-        correctans = (TextView) findViewById(R.id.sc_field);
-        wrongans=(TextView) findViewById(R.id.wrong_ans);
-        Restart = (Button) findViewById(R.id.restart_button);
-
-
-        StringBuffer sb3 = new StringBuffer();
-        StringBuffer sb4 = new StringBuffer();
-        sb3.append("Your Final Score\n Correct Answers: " + Question.correct + "\n");
-        sb4.append(" Wrong Answers: "+Question.wrong+"\n");
-
-        correctans.setText(sb3);
-        wrongans.setText(sb4);
-
-        Question.correct = 0;
-        Question.wrong = 0;
-
-        Restart.setOnClickListener(new View.OnClickListener() {
+        restart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(in);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
         });
     }
